@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,6 +69,35 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void parseResult(String res) {
+        try {
+            JSONObject response = new JSONObject(res);
+            JSONObject data = response.getJSONObject("data");
+            JSONArray items = data.optJSONArray("items");
+
+            /*Initialize array if null*/
+            if (null == feedItemList) {
+                feedItemList = new ArrayList<FeedItem>();
+            }
+
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject item = items.optJSONObject(i);
+                JSONObject thumbnail = item.optJSONObject("thumbnail");
+                String sqDefault = thumbnail.getString("sqDefault");
+                String title = item.optString("title");
+                String description = item.optString("description");
+                FeedItem feedItem = new FeedItem();
+                feedItem.setTitle(title);
+                feedItem.setThumbnail(sqDefault);
+                feedItem.setDescription(description);
+                feedItemList.add(feedItem);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     public class AsyncHttpTask extends AsyncTask<String, Void, Integer> {
 
         @Override
@@ -123,34 +151,6 @@ public class MainActivity extends ActionBarActivity {
             } else {
                 Log.e(TAG, "Failed to fetch data!");
             }
-        }
-    }
-
-    private void parseResult(String result) {
-        try {
-            JSONObject response = new JSONObject(result);
-            JSONObject data= response.getJSONObject("date");
-            JSONArray items = response.optJSONArray("items");
-
-            /*Initialize array if null*/
-            if (null == feedItemList) {
-                feedItemList = new ArrayList<FeedItem>();
-            }
-
-            for (int i = 0; i < items.length(); i++) {
-                JSONObject item = items.optJSONObject(i);
-                JSONObject thumbnail = item.optJSONObject("thumbnail");
-                String sqDefault= thumbnail.getString("sqDefault");
-                String title= item.optString("title");
-                String description = item.optString("description");
-                FeedItem feedItem = new FeedItem();
-                feedItem.setTitle(title);
-                feedItem.setThumbnail(sqDefault);
-                feedItem.setDescription(description);
-                feedItemList.add(feedItem);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 //    private void downloadImage(URL imageURL){
