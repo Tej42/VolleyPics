@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources><!-- your theme inherits from the material theme -->
+    <style name="AppTheme" parent="AppTheme.Base">
+        <!-- theme customizations -->
+    </style><style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- theme customizations -->
+        <!-- customize the color palette -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/accentColor</item>
+        <!--<item name="android:navigationBarColor">@color/navigationBarColor</item>-->
+    </style>
+</resources>
